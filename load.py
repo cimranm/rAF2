@@ -94,15 +94,10 @@ def load_graphs(
                 if verbose:
                     print(f"Skipping non-uniprot ID '{acc}'.")
         
-        
-
-        # Phosphosite 
-        #subgraph = 
     pdb_dir = pdb_path 
 
     # Each phosphosite
     graphs = {}
-
     edge_fns = [
             #add_aromatic_interactions,
             add_hydrophobic_interactions,
@@ -133,48 +128,22 @@ def load_graphs(
             pos = row['position'] 
             pdb_path = f"{pdb_dir}/{row['acc']}.pdb"
             g = construct_graph(config, pdb_path=pdb_path) 
-            
             res = list(g.nodes())[pos-1]
 
             psite = g.nodes(data=True)[res]
-
-            g = get_surface_motif(g, site=pos) # use default thresholds
-            
+            g = get_surface_motif(g, site=pos) # use default thresholds 
             g.name += f" @ {row['position']} {row['code']}"
-
 
             graph = {'graph': g, 'kinase': kinase, 'psite': psite, 'res': res}
             graphs[index] = graph
 
+            if verbose:
+                print(f"[{index}] Graph {graphs[index]['graph'].name}, RES: {res}")
             
-            print(f"[{index}] Graph {graphs[index]['graph'].name}, RES: {res}")
-            
-
-        #else:
         except:
-
             print(f"[FAILED] Graph")
             
-            
-
     return graphs
-
-
-'''
-    "-p",
-    "--phosphosite",
-    help="The file containing the phosphosite information",
-    
-)
-@c.option(
-    "--structures",
-    help="The directory containing .PDB files.  Downloaded files will be stored here.",
-    type=c.Path(
-        exists=True, file_okay=False, dir_okay=True, path_type=pathlib.Path
-    ),
-) 
-
-'''
 
 @c.command()
 @c.argument('phosphosite', nargs=1)
@@ -208,7 +177,6 @@ def main(
     if not graph_path.is_dir():
         raise ValueError(f"No such directory {graph_path}")
     
-     
     filename = "graph_objects"
     out_path = os.path.join(graph_path, filename)
 
@@ -227,7 +195,7 @@ def main(
     print(f"Loaded {len(graphs.keys())} graphs with radius {radius} and RSA {rsa}.")
     
     # Save graphs to file
-    print("Saving graphs...")
+    print("Saving graphs...", end=" ")
     outfile =  open(out_path, 'wb')
     pickle.dump(graphs, outfile)
     outfile.close()
