@@ -16,7 +16,7 @@ Options:
 ### Example 
 
 ```
-$ rprot ../datasets/human_known_serine.txt ../structures/human ../saved_graphs
+$ rprot ../datasets/human_known_serine.txt ../structures/human ../saved_graphs 
 Downloading P35611 from AF2... DOWNLOADED.
 Downloading P55212 from AF2... DOWNLOADED.
 ../structures/human/P18669.pdb already exists.
@@ -29,4 +29,27 @@ Downloading Q01954 from AF2... DOWNLOADED.
 Downloading P46734 from AF2... DOWNLOADED.
 Downloading P61224 from AF2... 
 
+```
+
+
+#### Some statistics are printed out at the end
+
+```
+$ rprot datasets/human_known_serine.txt structures/human/ saved_graphs/graphs-human-S-20A-0.2.txt\
+--radius 20 --rsa 0.2
+```
+
+After loading ...
+
+```
+STATISTICS
+----------
+2155 phosphosites examined
+52 graphs skipped
+2101 graphs successfully constructed
+2 graph constructions failed
+
+Created 2103 graphs with threshold radius 20.0 A and RSA 0.2
+Saving graphs to saved_graphs/graphs-human-S-known-all-20A-0.2.txt ... DONE.
+$
 ```
